@@ -16,7 +16,8 @@ class Registro extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 30.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -35,7 +36,8 @@ class Registro extends StatelessWidget {
               const Text(
                 "Regístrate para comenzar a ver tus películas",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white54, fontSize: 14),
+                style: TextStyle(color: Colors.white54, 
+                fontSize: 14),
               ),
               const SizedBox(height: 40),
               formulario(context),
@@ -51,14 +53,18 @@ Widget formulario(BuildContext context) {
   TextEditingController nombre = TextEditingController();
   TextEditingController apellido =
       TextEditingController();
+
   TextEditingController correo = TextEditingController();
   TextEditingController telefono =
       TextEditingController();
+
   TextEditingController fechaNacimiento =
       TextEditingController(); 
+
   TextEditingController pais = TextEditingController();
   TextEditingController generoFavorito =
       TextEditingController(); 
+      
   TextEditingController contrasenia = TextEditingController();
 
   return Column(

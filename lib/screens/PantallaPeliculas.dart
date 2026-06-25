@@ -12,7 +12,9 @@ class Pantallapeliculas extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Cartelera",
-          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+          style: TextStyle(
+            fontWeight: FontWeight.bold, 
+            letterSpacing: 1.2),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -23,7 +25,8 @@ class Pantallapeliculas extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.0, vertical: 10.0),
               child: Text(
                 "Películas Disponibles",
                 style: TextStyle(
