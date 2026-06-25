@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "titulo": "Interestelar",
+    "director": "Christopher Nolan",
+    "anio": 2014,
+    "duracion": "169 min",
+    "generos": ["Ciencia Ficción", "Drama", "Aventura"],
+    "calificacion": 8.6,
+    "sinopsis": "Un grupo de científicos y exploradores viaja a través de un agujero de gusano en el espacio intentando encontrar un nuevo hogar para la humanidad antes de que la Tierra sea inhabitable.",
+    "url_poster": "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+  },
+  {
+    "id": 2,
+    "titulo": "El Origen (Inception)",
+    "director": "Christopher Nolan",
+    "anio": 2010,
+    "duracion": "148 min",
+    "generos": ["Acción", "Ciencia Ficción", "Suspenso"],
+    "calificacion": 8.8,
+    "sinopsis": "Un hábil ladrón, prófugo de la justicia, se especializa en adentrarse en los sueños de las personas para robar secretos del subconsciente, pero ahora se le encomienda la tarea inversa: implantar una idea.",
+    "url_poster": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+  },
+  {
+    "id": 3,
+    "titulo": "Blade Runner 2049",
+    "director": "Denis Villeneuve",
+    "anio": 2017,
+    "duracion": "164 min",
+    "generos": ["Ciencia Ficción", "Misterio", "Acción"],
+    "calificacion": 8.0,
+    "sinopsis": "Treinta años después de los eventos de la primera película, un nuevo blade runner desentierra un viejo secreto que podría sumergir en el caos a lo que queda de la sociedad.",
+    "url_poster": "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+  },
+  {
+    "id": 4,
+    "titulo": "Mad Max: Furia en el Camino",
+    "director": "George Miller",
+    "anio": 2015,
+    "duracion": "120 min",
+    "generos": ["Acción", "Aventura", "Ciencia Ficción"],
+    "calificacion": 8.1,
+    "sinopsis": "En un desierto postapocalíptico, una mujer se rebela contra un tirano en busca de su hogar, ayudada por un grupo de prisioneras y un vagabundo llamado Max.",
+    "url_poster": "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+  },
+  {
+    "id": 5,
+    "titulo": "Parásitos",
+    "director": "Bong Joon Ho",
+    "anio": 2019,
+    "duracion": "132 min",
+    "generos": ["Drama", "Suspenso", "Comedia Negra"],
+    "calificacion": 8.5,
+    "sinopsis": "Una familia de bajos recursos se las ingenia para emplearse uno a uno en la casa de una adinerada familia, desencadenando una serie de incidentes impredecibles.",
+    "url_poster": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
+  },
+  {
+    "id": 6,
+    "titulo": "El Club de la Pelea",
+    "director": "David Fincher",
+    "anio": 1999,
+    "duracion": "139 min",
+    "generos": ["Drama", "Suspenso Psicológico"],
+    "calificacion": 8.8,
+    "sinopsis": "Un oficinista insomne y un carismático fabricante de jabón forman un club de lucha clandestino que evoluciona hacia algo mucho más grande y peligroso.",
+    "url_poster": "https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+  },
+  {
+    "id": 7,
+    "titulo": "Whiplash: Música y Obsesión",
+    "director": "Damien Chazelle",
+    "anio": 2014,
+    "duracion": "106 min",
+    "generos": ["Drama", "Música"],
+    "calificacion": 8.5,
+    "sinopsis": "Un joven y ambicioso baterista de jazz es exigido hasta el límite de su salud mental y física por un despiadado instructor de música en un conservatorio de élite.",
+    "url_poster": "https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
+  },
+  {
+    "id": 8,
+    "titulo": "Batman: El Caballero de la Noche",
+    "director": "Christopher Nolan",
+    "anio": 2008,
+    "duracion": "152 min",
+    "generos": ["Acción", "Crimen", "Drama"],
+    "calificacion": 9.0,
+    "sinopsis": "Batman se enfrenta al Guasón, una mente criminal que busca sumergir a Ciudad Gótica en la anarquía y poner a prueba los límites morales del héroe.",
+    "url_poster": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"
+  },
+  {
+    "id": 9,
+    "titulo": "Pulp Fiction",
+    "director": "Quentin Tarantino",
+    "anio": 1994,
+    "duracion": "154 min",
+    "generos": ["Crimen", "Drama"],
+    "calificacion": 8.9,
+    "sinopsis": "Las vidas de dos asesinos a sueldo, un boxeador, la esposa de un gángster y un par de bandidos se entrelazan en una serie de eventos divertidos y extraños.",
+    "url_poster": "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+  },
+  {
+    "id": 10,
+    "titulo": "Avatar: El Camino del Agua",
+    "director": "James Cameron",
+    "anio": 2022,
+    "duracion": "192 min",
+    "generos": ["Acción", "Aventura", "Fantasía"],
+    "calificacion": 7.6,
+    "sinopsis": "Jake Sully y Neytiri forman una familia en Pandora, pero se ven obligados a abandonar su hogar y explorar las regiones acuáticas del planeta cuando una antigua amenaza regresa.",
+    "url_poster": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=500",
+    "url_video": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
+  }
+]
