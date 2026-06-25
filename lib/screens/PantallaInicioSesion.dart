@@ -1,9 +1,16 @@
+import 'package:app_taller1/main.dart';
 import 'package:app_taller1/screens/Home.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class Pantallainiciosesion extends StatelessWidget {
-  const Pantallainiciosesion({super.key});
+class PantallaIniciosesion extends StatefulWidget {
+  const PantallaIniciosesion({super.key});
 
+  @override
+  State<PantallaIniciosesion> createState() => _PantallaIniciosesionState();
+}
+
+class _PantallaIniciosesionState extends State<PantallaIniciosesion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +41,7 @@ class Pantallainiciosesion extends StatelessWidget {
               const Text(
                 "Ingresa tus credenciales para continuar",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white54,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.white54, fontSize: 14),
               ),
               const SizedBox(height: 50),
               inputIniciarSesion(context),
@@ -49,7 +53,10 @@ class Pantallainiciosesion extends StatelessWidget {
   }
 }
 
-Widget inputIniciarSesion(BuildContext context) {
+Widget inputIniciarSesion(BuildContext context, correo, contrasenia) {
+  TextEditingController correo = TextEditingController();
+  TextEditingController contrasenia = TextEditingController();
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -102,10 +109,7 @@ Widget inputIniciarSesion(BuildContext context) {
       ),
       const SizedBox(height: 40),
       FilledButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        ),
+        onPressed: () => login(context, correo, contrasenia),
         style: FilledButton.styleFrom(
           backgroundColor: Colors.red.shade800,
           foregroundColor: Colors.white,
@@ -122,4 +126,14 @@ Widget inputIniciarSesion(BuildContext context) {
       ),
     ],
   );
+}
+
+Future<void> login(context, correo, contrasenia) async {
+  final AuthResponse res = await supabase.auth.signInWithPassword(
+    email: correo.text,
+    password: contrasenia.text,
+  );
+  final Session? session = res.session;
+  final User? user = res.user;
+  Navigator.pushNamed(context, "/Peliculas");
 }

@@ -249,7 +249,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: CONTRASEÑA
       TextField(
         controller: contrasenia,
         obscureText: true,
@@ -380,6 +379,7 @@ Future<void> registro(
     );
 
     final User? user = res.user;
+    final Session? session = res.session;
 
     if (user != null) {
       await supabase.from('perfiles').insert({

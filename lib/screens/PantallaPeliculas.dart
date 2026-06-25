@@ -1,15 +1,24 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'; // Asegúrate de tener la instancia de Supabase accesible
+import 'package:supabase_flutter/supabase_flutter.dart'; 
 
-class Pantallapeliculas extends StatelessWidget {
-  const Pantallapeliculas({super.key});
+class PantallaPeliculas extends StatelessWidget {
+
+  const PantallaPeliculas({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
+        actions: [
+        IconButton(
+          icon: const Icon(Icons.brightness_1),
+          onPressed: () {
+          },
+        ),
+      ],
         title: const Text(
           "Cartelera",
           style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
@@ -75,7 +84,6 @@ Widget listaPeliculas(BuildContext context) {
           itemBuilder: (context, index) {
             final pelicula = listaPeliculas[index];
             
-            // Controlador local para capturar el texto de este TextField específico
             final TextEditingController comentarioController = TextEditingController();
 
             return Card(
@@ -145,11 +153,10 @@ Widget listaPeliculas(BuildContext context) {
                         ),
                       ),
                       onTap: () {
-                        print("Clic en: ${pelicula['titulo']}");
+                        mostrarModalDetalles(context, pelicula);
                       },
                     ),
                     
-                    // MODIFICADO: TextField con botón para enviar a Supabase
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 4.0),
                       child: Row(
@@ -185,13 +192,13 @@ Widget listaPeliculas(BuildContext context) {
                             icon: const Icon(Icons.send, color: Colors.red),
                             onPressed: () {
                               if (comentarioController.text.trim().isNotEmpty) {
-                                // Llamamos a la función para guardar en Supabase
+                              
                                 guardarComentario(
                                   context, 
-                                  pelicula['titulo'], // O usa pelicula['id'] si tu JSON local tiene IDs
+                                  pelicula['titulo'],
                                   comentarioController.text.trim()
                                 );
-                                comentarioController.clear(); // Limpia el campo tras enviar
+                                comentarioController.clear();
                               }
                             },
                           ),
@@ -211,7 +218,141 @@ Widget listaPeliculas(BuildContext context) {
   );
 }
 
-// NUEVA FUNCIÓN: Envía los datos directamente a tu tabla de Supabase
+void mostrarModalDetalles(BuildContext context, dynamic pelicula) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: const Color(0xFF1A1A1A),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    isScrollControlled: true,
+    builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white24,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    pelicula['url_poster'],
+                    width: 90,
+                    height: 130,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: 90,
+                      height: 130,
+                      color: Colors.white10,
+                      child: const Icon(Icons.movie, color: Colors.white38, size: 36),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pelicula['titulo'],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        "Director: ${pelicula['director']}",
+                        style: const TextStyle(color: Colors.white70, fontSize: 14),
+                      ),
+                      Text(
+                        "Año: ${pelicula['anio']}",
+                        style: const TextStyle(color: Colors.white54, fontSize: 14),
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: Colors.amber.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.star, color: Colors.amber, size: 16),
+                            const SizedBox(width: 6),
+                            Text(
+                              pelicula['calificacion'].toString(),
+                              style: const TextStyle(
+                                color: Colors.amber,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            if (pelicula['sinopsis'] != null) ...[
+              const Text(
+                "Sinopsis",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                pelicula['sinopsis'],
+                style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.4),
+              ),
+              const SizedBox(height: 16),
+            ],
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  "Cerrar",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 Future<void> guardarComentario(BuildContext context, String tituloPelicula, String comentario) async {
   try {
     final supabase = Supabase.instance.client;

@@ -13,19 +13,16 @@ class _HomeState extends State<Home> {
   int indice = 0;
 
   final List<Widget> paginas = [
-    const Pantallapeliculas(),
-    const PantallaReproductor(
-    ),
+    const PantallaPeliculas(),
+    const PantallaReproductor(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: const Color(0xFF121212),
-      body: IndexedStack(
-        index: indice,
-        children: paginas,
-      ),
+      body: IndexedStack(index: indice, children: paginas),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: indice,
         onTap: (value) => setState(() {
@@ -36,7 +33,10 @@ class _HomeState extends State<Home> {
         backgroundColor: const Color(0xFF1A1A1A),
         type: BottomNavigationBarType.fixed,
         elevation: 10,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+        selectedLabelStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+        ),
         unselectedLabelStyle: const TextStyle(fontSize: 12),
         items: const [
           BottomNavigationBarItem(

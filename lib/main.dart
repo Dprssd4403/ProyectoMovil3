@@ -16,19 +16,32 @@ Future<void> main() async {
 
 final supabase = Supabase.instance.client;
 
-class Taller1 extends StatelessWidget {
+class Taller1 extends StatefulWidget {
   const Taller1({super.key});
+
+  @override
+  State<Taller1> createState() => _Taller1State();
+}
+
+class _Taller1State extends State<Taller1> {
+  bool modoOscuro = true;
+
+  void cambiarTema() {
+    setState(() {
+      modoOscuro = !modoOscuro;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
       home: const Cuerpo(),
       routes: {
         '/home': (context) => Home(),
-        '/InicioSesion': (context) => Pantallainiciosesion(),
-        '/Peliculas': (context) => Pantallapeliculas(),
+        '/InicioSesion': (context) => PantallaIniciosesion(),
+        '/Peliculas': (context) => PantallaPeliculas(),
+        '/Reproductor': (context) => PantallaReproductor(),
         '/Registro': (context) => Registro(),
       },
     );
@@ -42,10 +55,7 @@ class Cuerpo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: Stack(
         children: [
           Image.network(
@@ -54,9 +64,7 @@ class Cuerpo extends StatelessWidget {
             height: double.infinity,
             fit: BoxFit.cover,
           ),
-          Container(
-            color: Colors.black.withOpacity(0.65),
-          ),
+          Container(color: Colors.black.withOpacity(0.65)),
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -93,7 +101,8 @@ class Cuerpo extends StatelessWidget {
                   ),
                   const SizedBox(height: 60),
                   ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, "/InicioSesion"),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, "/InicioSesion"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.shade800,
                       foregroundColor: Colors.white,
@@ -105,7 +114,10 @@ class Cuerpo extends StatelessWidget {
                     ),
                     child: const Text(
                       "Iniciar Sesión",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -121,7 +133,10 @@ class Cuerpo extends StatelessWidget {
                     ),
                     child: const Text(
                       "Registrarse",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
