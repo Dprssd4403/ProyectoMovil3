@@ -50,15 +50,15 @@ class Registro extends StatelessWidget {
 Widget formulario(BuildContext context) {
   TextEditingController nombre = TextEditingController();
   TextEditingController apellido =
-      TextEditingController(); // Añadido al formulario
+      TextEditingController();
   TextEditingController correo = TextEditingController();
   TextEditingController telefono =
-      TextEditingController(); // Añadido al formulario
+      TextEditingController();
   TextEditingController fechaNacimiento =
-      TextEditingController(); // Añadido al formulario
-  TextEditingController pais = TextEditingController(); // Añadido al formulario
+      TextEditingController(); 
+  TextEditingController pais = TextEditingController();
   TextEditingController generoFavorito =
-      TextEditingController(); // Añadido al formulario
+      TextEditingController(); 
   TextEditingController contrasenia = TextEditingController();
 
   return Column(
@@ -90,7 +90,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: APELLIDO (Añadido)
       TextField(
         controller: apellido,
         style: const TextStyle(color: Colors.white),
@@ -116,7 +115,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: CORREO ELECTRÓNICO
       TextField(
         controller: correo,
         keyboardType: TextInputType.emailAddress,
@@ -143,7 +141,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: TELÉFONO (Añadido)
       TextField(
         controller: telefono,
         keyboardType: TextInputType.phone,
@@ -170,7 +167,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: FECHA DE NACIMIENTO (Añadido - Nota: Requiere formato AAAA-MM-DD para evitar errores)
       TextField(
         controller: fechaNacimiento,
         keyboardType: TextInputType.datetime,
@@ -200,7 +196,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: PAÍS (Añadido)
       TextField(
         controller: pais,
         style: const TextStyle(color: Colors.white),
@@ -226,7 +221,6 @@ Widget formulario(BuildContext context) {
       ),
       const SizedBox(height: 20),
 
-      // CAMPO: GÉNERO FAVORITO (Añadido)
       TextField(
         controller: generoFavorito,
         style: const TextStyle(color: Colors.white),
@@ -379,18 +373,26 @@ Future<void> registro(
   generoFavorito,
   contrasenia,
 ) async {
-  final AuthResponse res = await supabase.auth.signUp(
-    email: correo.text,
-    password: contrasenia.text,
-    data: {
-      'nombre': nombre.text,
-      'apellido': apellido.text,
-      'telefono': telefono.text,
-      'fecha_nacimiento': DateTime.parse(fechaNacimiento.text).toIso8601String(),
-      'pais': pais.text,
-      'genero_favorito': generoFavorito.text,
-    },
-  );
-  final Session? session = res.session;
-  final User? user = res.user;
+  try {
+    final AuthResponse res = await supabase.auth.signUp(
+      email: correo.text,
+      password: contrasenia.text,
+    );
+
+    final User? user = res.user;
+
+    if (user != null) {
+      await supabase.from('perfiles').insert({
+        'id': user.id,
+        'nombre': nombre.text,
+        'apellido': apellido.text,
+        'telefono': telefono.text,
+        'fecha_nacimiento': DateTime.parse(fechaNacimiento.text).toIso8601String(),
+        'pais': pais.text,
+        'genero_favorito': generoFavorito.text,
+      });
+    }
+  } catch (e) {
+    print("Error en el registro: $e");
+  }
 }
