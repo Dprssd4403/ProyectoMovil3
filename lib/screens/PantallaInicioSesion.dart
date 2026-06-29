@@ -1,5 +1,4 @@
 import 'package:app_taller1/main.dart';
-import 'package:app_taller1/screens/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -53,14 +52,15 @@ class _PantallaIniciosesionState extends State<PantallaIniciosesion> {
   }
 }
 
-Widget inputIniciarSesion(BuildContext context, correo, contrasenia) {
-  TextEditingController correo = TextEditingController();
-  TextEditingController contrasenia = TextEditingController();
+Widget inputIniciarSesion(BuildContext context) {
+  final TextEditingController correo = TextEditingController();
+  final TextEditingController contrasenia = TextEditingController();
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       TextField(
+        controller: correo,
         keyboardType: TextInputType.emailAddress,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
@@ -85,6 +85,7 @@ Widget inputIniciarSesion(BuildContext context, correo, contrasenia) {
       ),
       const SizedBox(height: 20),
       TextField(
+        controller: contrasenia,
         obscureText: true,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
@@ -129,11 +130,27 @@ Widget inputIniciarSesion(BuildContext context, correo, contrasenia) {
 }
 
 Future<void> login(context, correo, contrasenia) async {
-  final AuthResponse res = await supabase.auth.signInWithPassword(
-    email: correo.text,
-    password: contrasenia.text,
-  );
-  final Session? session = res.session;
-  final User? user = res.user;
-  Navigator.pushNamed(context, "/Peliculas");
+  try {
+    final AuthResponse res = await supabase.auth.signInWithPassword(
+      email: correo.text.trim(),
+      password: contrasenia.text.trim(),
+    );
+    
+    Navigator.pushReplacementNamed(context, "/home");
+  } catch (e) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1E1E),
+        title: const Text("Error de Autenticación", style: TextStyle(color: Colors.white)),
+        content: Text(e.toString(), style: const TextStyle(color: Colors.white70)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK", style: TextStyle(color: Colors.red)),
+          )
+        ],
+      ),
+    );
+  }
 }
