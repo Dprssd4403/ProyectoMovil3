@@ -6,8 +6,7 @@ import 'package:app_taller1/screens/PantallaReproductor.dart';
 import 'package:app_taller1/screens/Welcome.dart'; // Importa la nueva pantalla
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-//hbuyhgbjbiuiojioji
+ 
 Future<void> main() async {
   await Supabase.initialize(
     url: 'https://knllwrjqwdsztpfibcne.supabase.co',
@@ -15,24 +14,24 @@ Future<void> main() async {
   );
   runApp(const Taller1());
 }
-
+ 
 final supabase = Supabase.instance.client;
-
+ 
 class Taller1 extends StatelessWidget {
   const Taller1({super.key});
-
+ 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/welcome', 
+      initialRoute: '/welcome',
       routes: {
-        '/welcome': (context) => const Welcome(), 
+        '/welcome': (context) => const Welcome(),
         '/home': (context) => Home(),
         '/InicioSesion': (context) => PantallaIniciosesion(),
         '/Peliculas': (context) => PantallaPeliculas(),
         '/Reproductor': (context) => PantallaReproductor(),
-        '/Registro': (context) => Registro(), 
+        '/Registro': (context) => Registro(),
       },
     );
   }
