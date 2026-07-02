@@ -1,4 +1,93 @@
+<<<<<<< HEAD
 import 'package:app_taller1/main.dart';
+=======
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:app_taller1/screens/Home.dart';
+
+class Pantallainiciosesion extends StatefulWidget {
+  const Pantallainiciosesion({super.key});
+
+  @override
+  State<Pantallainiciosesion> createState() => _PantallainiciosesionState();
+}
+
+class _PantallainiciosesionState extends State<Pantallainiciosesion> {
+  // 1. Controladores para capturar el texto
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // 2. Función de Login mejorada
+  Future<void> _handleLogin(BuildContext context) async {
+    // Validación: que no estén vacíos
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Por favor, llena todos los campos")),
+      );
+      return;
+    }
+
+    try {
+      // Intento de conexión a Supabase
+      final AuthResponse res = await Supabase.instance.client.auth.signInWithPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      if (res.session != null) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${e.toString()}")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 100),
+              const Text("Iniciar Sesión", style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 50),
+              
+              // TextField con controladores
+              TextField(
+                controller: _emailController,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(labelText: "Correo", labelStyle: TextStyle(color: Colors.white54)),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(labelText: "Contraseña", labelStyle: TextStyle(color: Colors.white54)),
+              ),
+              const SizedBox(height: 40),
+              
+              // Botón que llama a la función validada
+              FilledButton(
+                onPressed: () => _handleLogin(context),
+                child: const Text("Iniciar Sesión"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*import 'package:app_taller1/main.dart';
+import 'package:app_taller1/screens/Home.dart';
+>>>>>>> 1f7ba2be4e03e38d3160627ec9fc8b090bfc3b7c
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -129,6 +218,7 @@ Widget inputIniciarSesion(BuildContext context) {
   );
 }
 
+<<<<<<< HEAD
 Future<void> login(context, correo, contrasenia) async {
   try {
     final AuthResponse res = await supabase.auth.signInWithPassword(
@@ -154,3 +244,15 @@ Future<void> login(context, correo, contrasenia) async {
     );
   }
 }
+=======
+Future<void> login( context, correo, contrasenia ) async {
+  final AuthResponse res = await supabase.auth.signUp(
+  email: correo.text,
+  password: contrasenia.text,
+);
+final Session? session = res.session;
+final User? user = res.user;
+
+Navigator.pushNamed(context, "/guardar");
+}*/
+>>>>>>> 1f7ba2be4e03e38d3160627ec9fc8b090bfc3b7c

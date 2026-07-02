@@ -30,9 +30,65 @@ class _PantallaPeliculasState extends State<PantallaPeliculas> {
         title: const Text(
           "Cartelera",
           style: TextStyle(
+<<<<<<< HEAD
             color: Colors.white,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.2,
+=======
+            fontWeight: FontWeight.bold, 
+            letterSpacing: 1.2),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.0, vertical: 10.0),
+              child: Text(
+                "Películas Disponibles",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Expanded(
+              child: listaPeliculas(context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Future<List<dynamic>> leerJsonLocal(BuildContext context) async {
+  final String respuesta = await DefaultAssetBundle.of(
+    context,
+  ).loadString('assets/json/peliculas.json');
+  final data = jsonDecode(respuesta);
+  return data;
+}
+
+Widget listaPeliculas(BuildContext context) {
+  return FutureBuilder<List<dynamic>>(
+    future: leerJsonLocal(context),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator(color: Colors.red));
+      }
+      if (snapshot.hasError) {
+        return Center(
+          child: Text(
+            "Error al cargar películas: ${snapshot.error}",
+            style: const TextStyle(color: Colors.white54),
+>>>>>>> 1f7ba2be4e03e38d3160627ec9fc8b090bfc3b7c
           ),
         ),
         backgroundColor: const Color(0xFF1A1A1A),
