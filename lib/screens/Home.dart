@@ -12,15 +12,29 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int indice = 0;
 
-  final List<Widget> paginas = [
-    const PantallaPeliculas(),
-    const PantallaReproductor(),
-  ];
+  Map<String, dynamic> peliculaActual = {};
+
+  void reproducirPelicula(Map<String, dynamic> pelicula) {
+    setState(() {
+      peliculaActual = pelicula;
+      indice = 1;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
 
+    final List<Widget> paginas = [
+      PantallaPeliculas(
+        onPeliculaSeleccionada: reproducirPelicula,
+      ),
+      PantallaReproductor(
+        key: ValueKey(peliculaActual['id'] ?? 'vacio'),
+        pelicula: peliculaActual,
+      ),
+    ];
+
+    return Scaffold(
       backgroundColor: const Color(0xFF121212),
       body: IndexedStack(index: indice, children: paginas),
       bottomNavigationBar: BottomNavigationBar(
