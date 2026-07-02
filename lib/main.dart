@@ -7,6 +7,7 @@ import 'package:app_taller1/screens/Welcome.dart'; // Importa la nueva pantalla
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+//hbuyhgbjbiuiojioji
 Future<void> main() async {
   await Supabase.initialize(
     url: 'https://knllwrjqwdsztpfibcne.supabase.co',
