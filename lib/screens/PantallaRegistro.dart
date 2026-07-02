@@ -3,10 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:app_taller1/main.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+ 
 class Registro extends StatelessWidget {
   const Registro({super.key});
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,14 +48,14 @@ class Registro extends StatelessWidget {
     );
   }
 }
-
+ 
 class FormularioRegistro extends StatefulWidget {
   const FormularioRegistro({super.key});
-
+ 
   @override
   State<FormularioRegistro> createState() => _FormularioRegistroState();
 }
-
+ 
 class _FormularioRegistroState extends State<FormularioRegistro> {
   final TextEditingController nombre = TextEditingController();
   final TextEditingController apellido = TextEditingController();
@@ -65,15 +65,15 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
   final TextEditingController pais = TextEditingController();
   final TextEditingController generoFavorito = TextEditingController();
   final TextEditingController contrasenia = TextEditingController();
-
+ 
   XFile? _foto;
-
+ 
   void _actualizarImagen(XFile? nuevaImagen) {
     setState(() {
       _foto = nuevaImagen;
     });
   }
-
+ 
   void _mostrarOpcionesFoto(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -119,7 +119,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
       },
     );
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -171,7 +171,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           style: const TextStyle(color: Colors.white70, fontSize: 14),
         ),
         const SizedBox(height: 30),
-
+ 
         TextField(
           controller: nombre,
           style: const TextStyle(color: Colors.white),
@@ -196,7 +196,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: apellido,
           style: const TextStyle(color: Colors.white),
@@ -221,7 +221,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: correo,
           keyboardType: TextInputType.emailAddress,
@@ -247,7 +247,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: telefono,
           keyboardType: TextInputType.phone,
@@ -273,7 +273,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: fechaNacimiento,
           keyboardType: TextInputType.datetime,
@@ -302,7 +302,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: pais,
           style: const TextStyle(color: Colors.white),
@@ -327,7 +327,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: generoFavorito,
           style: const TextStyle(color: Colors.white),
@@ -355,7 +355,7 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 20),
-
+ 
         TextField(
           controller: contrasenia,
           obscureText: true,
@@ -381,10 +381,10 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
           ),
         ),
         const SizedBox(height: 40),
-
+ 
         FilledButton(
           onPressed: () async {
-            await registro(
+            bool registroExitoso = await registro(
               context,
               nombre,
               apellido,
@@ -394,20 +394,22 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
               pais,
               generoFavorito,
               contrasenia,
-              _foto?.path, 
+              _foto?.path,
             );
-
-            irInicioSesion(
-              context,
-              nombre,
-              apellido,
-              correo,
-              telefono,
-              fechaNacimiento,
-              pais,
-              generoFavorito,
-              contrasenia,
-            );
+ 
+            if (registroExitoso) {
+              irInicioSesion(
+                context,
+                nombre,
+                apellido,
+                correo,
+                telefono,
+                fechaNacimiento,
+                pais,
+                generoFavorito,
+                contrasenia,
+              );
+            }
           },
           style: FilledButton.styleFrom(
             backgroundColor: Colors.red.shade800,
@@ -418,16 +420,13 @@ class _FormularioRegistroState extends State<FormularioRegistro> {
             ),
             elevation: 4,
           ),
-          child: const Text(
-            "Registrarse",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
+          child: const Text("Registrarse"),
         ),
       ],
     );
   }
 }
-
+ 
 void irInicioSesion(
   BuildContext context,
   nombre,
@@ -470,57 +469,99 @@ void irInicioSesion(
     );
   }
 }
-Future<void> registro(
-  context,
-  nombre,
-  apellido,
-  correo,
-  telefono,
-  fechaNacimiento,
-  pais,
-  generoFavorito,
-  contrasenia,
-  String? imagenRuta, 
+ 
+Future<bool> registro(
+  BuildContext context,
+  TextEditingController nombre,
+  TextEditingController apellido,
+  TextEditingController correo,
+  TextEditingController telefono,
+  TextEditingController fechaNacimiento,
+  TextEditingController pais,
+  TextEditingController generoFavorito,
+  TextEditingController contrasenia,
+  String? imagenRuta,
 ) async {
   try {
-
+    print("Iniciando Auth SignUp en Supabase...");
     final AuthResponse res = await supabase.auth.signUp(
-      email: correo.text,
-      password: contrasenia.text,
+      email: correo.text.trim(),
+      password: contrasenia.text.trim(),
     );
+ 
     final User? user = res.user;
-
-    if (user != null) {
-      String? avatarUrl;
-
-      if (imagenRuta != null) {
-        final avatarFile = File(imagenRuta);
-        
-        final String fileName = '${user.id}_avatar.png'; 
-        
-        await supabase.storage.from('avatars').upload(
-          'public/$fileName',
-          avatarFile,
-          fileOptions: const FileOptions(cacheControl: 'no-cache', upsert: true),
-        );
-        
-        avatarUrl = fileName; 
-      }
-
-      await supabase.from('perfiles').insert({
-        'id': user.id,
-        'nombre': nombre.text,
-        'apellido': apellido.text,
-        'telefono': telefono.text,
-        'fecha_nacimiento': DateTime.parse(fechaNacimiento.text).toIso8601String(),
-        'pais': pais.text,
-        'genero_favorito': generoFavorito.text,
-        'avatar_url': avatarUrl, 
-      });
-      
-      print("Registro exitoso de datos y fotografía.");
+ 
+    if (user == null) {
+      print("Error: El usuario devuelto por Auth es NULL");
+      return false;
     }
+ 
+    print("Usuario creado en Auth con ID: ${user.id}");
+    String? avatarUrl;
+ 
+    if (imagenRuta != null) {
+      print("Preparando archivo de imagen desde la ruta: $imagenRuta");
+      final avatarFile = File(imagenRuta);
+ 
+      if (!await avatarFile.exists()) {
+        print(
+          "ERROR CRÍTICO: El archivo de la imagen no existe en la ruta especificada.",
+        );
+      } else {
+        final String fileName = '${user.id}_avatar.png';
+ 
+        print("Subiendo imagen al Storage (Bucket: AVATARS)...");
+ 
+        await supabase.storage
+            .from('Avatars')
+            .upload(
+              fileName,
+              avatarFile,
+              fileOptions: const FileOptions(
+                cacheControl: '3600',
+                upsert: true,
+              ),
+            );
+ 
+        avatarUrl = supabase.storage.from('Avatars').getPublicUrl(fileName);
+        print("Imagen subida exitosamente. URL generada: $avatarUrl");
+      }
+    } else {
+      print("No se seleccionó ninguna imagen (imagenRuta es NULL).");
+    }
+ 
+    print("Insertando datos en la tabla 'perfiles'...");
+ 
+    DateTime? parsedDate;
+    try {
+      parsedDate = DateTime.parse(fechaNacimiento.text.trim());
+    } catch (_) {
+      parsedDate = DateTime.now();
+      print("Advertencia: No se pudo parsear la fecha, usando fecha actual.");
+    }
+ 
+    await supabase.from('perfiles').insert({
+      'id': user.id,
+      'nombre': nombre.text.trim(),
+      'apellido': apellido.text.trim(),
+      'telefono': telefono.text.trim(),
+      'fecha_nacimiento': parsedDate.toIso8601String(),
+      'pais': pais.text.trim(),
+      'genero_favorito': generoFavorito.text.trim(),
+      'avatar_url': avatarUrl,
+    });
+ 
+    print("¡Registro completo en 'perfiles' finalizado con éxito!");
+    return true;
   } catch (e) {
-    print("Error en el registro: $e");
+    print("ERROR CRÍTICO EN EL FLUJO DE REGISTRO: $e");
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Error en el Servidor"),
+        content: Text(e.toString()),
+      ),
+    );
+    return false;
   }
 }
