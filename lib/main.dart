@@ -37,7 +37,7 @@ class _Taller1State extends State<Taller1> {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => Cuerpo(),
+        '/': (context) => Welcome(),
         '/home': (context) => Home(),
         '/InicioSesion': (context) => PantallaIniciosesion(),
         '/Registro': (context) => Registro(),

@@ -22,20 +22,21 @@ class _PantallaReproductorState extends State<PantallaReproductor> {
     super.initState();
 
     final String urlVideo = widget.pelicula['url_video'] ?? '';
-    final String? videoId = YoutubePlayer.convertUrlToId(urlVideo);
+    final String? videoId = YoutubePlayerController.convertUrlToId(urlVideo);
 
     if (videoId == null) {
-      // El link no es un link de YouTube válido (ej. sigue siendo un link de Drive)
       setState(() {
-        _errorMsg = 'El link de este video no es un enlace válido de YouTube.';
+        _errorMsg = 'Seleccione una pelicula para visualizar';
       });
       return;
     }
 
-    _controller = YoutubePlayerController(
-      initialVideoId: videoId,
-      flags: const YoutubePlayerFlags(
-        autoPlay: true,
+    _controller = YoutubePlayerController.fromVideoId(
+      videoId: videoId,
+      autoPlay: true,
+      params: const YoutubePlayerParams(
+        showControls: true,
+        showFullscreenButton: true,
         mute: false,
       ),
     );
@@ -43,7 +44,7 @@ class _PantallaReproductorState extends State<PantallaReproductor> {
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller?.close();
     super.dispose();
   }
 
@@ -69,35 +70,22 @@ class _PantallaReproductorState extends State<PantallaReproductor> {
               )
             : _controller == null
                 ? const CircularProgressIndicator(color: Colors.red)
-                : YoutubePlayerBuilder(
-                    player: YoutubePlayer(
-                      controller: _controller!,
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.red,
-                      progressColors: const ProgressBarColors(
-                        playedColor: Colors.red,
-                        handleColor: Colors.redAccent,
-                      ),
-                      onReady: () {
-                        debugPrint('▶️ Reproductor de YouTube listo');
-                      },
-                    ),
-                    builder: (context, player) {
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            player,
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                widget.pelicula['sinopsis'] ?? '',
-                                style: const TextStyle(color: Colors.white70),
-                              ),
-                            ),
-                          ],
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        YoutubePlayer(
+                          controller: _controller!,
+                          aspectRatio: 16 / 9,
                         ),
-                      );
-                    },
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text(
+                            widget.pelicula['sinopsis'] ?? '',
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
       ),
     );

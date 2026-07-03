@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class Cuerpo extends StatefulWidget {
-  const Cuerpo({super.key});
+class Welcome extends StatelessWidget {
+  const Welcome({super.key});
 
-  @override
-  State<Cuerpo> createState() => _CuerpoState();
-}
-
-class _CuerpoState extends State<Cuerpo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +32,6 @@ class _CuerpoState extends State<Cuerpo> {
                       fontSize: 42,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          color: Colors.black54,
-                          offset: Offset(2.0, 2.0),
-                        ),
-                      ],
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -58,8 +46,7 @@ class _CuerpoState extends State<Cuerpo> {
                   ),
                   const SizedBox(height: 60),
                   ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, "/InicioSesion"),
+                    onPressed: () => Navigator.pushNamed(context, "/InicioSesion"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.shade800,
                       foregroundColor: Colors.white,
@@ -67,15 +54,8 @@ class _CuerpoState extends State<Cuerpo> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      elevation: 5,
                     ),
-                    child: const Text(
-                      "Iniciar Sesión",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: const Text("Iniciar Sesión"),
                   ),
                   const SizedBox(height: 16),
                   OutlinedButton(
@@ -88,13 +68,7 @@ class _CuerpoState extends State<Cuerpo> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
-                      "Registrarse",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: const Text("Registrarse"),
                   ),
                 ],
               ),
