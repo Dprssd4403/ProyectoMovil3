@@ -25,9 +25,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     final List<Widget> paginas = [
-      PantallaPeliculas(
-        onPeliculaSeleccionada: reproducirPelicula,
-      ),
+      PantallaPeliculas(),
       PantallaReproductor(
         key: ValueKey(peliculaActual['id'] ?? 'vacio'),
         pelicula: peliculaActual,

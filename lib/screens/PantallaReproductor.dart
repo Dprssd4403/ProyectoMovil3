@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class PantallaReproductor extends StatefulWidget {
   final Map<String, dynamic> pelicula;
@@ -14,36 +14,37 @@ class PantallaReproductor extends StatefulWidget {
 }
 
 class _PantallaReproductorState extends State<PantallaReproductor> {
-  late VideoPlayerController _controller;
-  bool _initialized = false;
+  YoutubePlayerController? _controller;
+  String? _errorMsg;
 
   @override
   void initState() {
-    super.initState(); 
+    super.initState();
 
     final String urlVideo = widget.pelicula['url_video'] ?? '';
+    final String? videoId = YoutubePlayer.convertUrlToId(urlVideo);
 
-    _controller = VideoPlayerController.networkUrl(Uri.parse(urlVideo))
-      ..initialize().then((_) {
-        setState(() {
-          _initialized = true;
-        });
-        _controller.play();
+    if (videoId == null) {
+      // El link no es un link de YouTube válido (ej. sigue siendo un link de Drive)
+      setState(() {
+        _errorMsg = 'El link de este video no es un enlace válido de YouTube.';
       });
+      return;
+    }
+
+    _controller = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
-  }
-
-  String _formatDuration(Duration duration) {
-    if (duration == Duration.zero) return "00:00";
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "$twoDigitMinutes:$twoDigitSeconds";
   }
 
   @override
@@ -57,82 +58,47 @@ class _PantallaReproductorState extends State<PantallaReproductor> {
         foregroundColor: Colors.white,
       ),
       body: Center(
-        child: AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                color: Colors.grey.shade900,
-                child: _initialized
-                    ? VideoPlayer(_controller)
-                    : const Center(
-                        child: CircularProgressIndicator(color: Colors.red),
-                      ),
-              ),
-              if (_initialized && !_controller.value.isPlaying)
-                Container(
-                  color: Colors.black38,
+        child: _errorMsg != null
+            ? Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  _errorMsg!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white70),
                 ),
-              if (_initialized)
-                IconButton(
-                  icon: Icon(
-                    _controller.value.isPlaying
-                        ? Icons.pause_circle_filled
-                        : Icons.play_circle_filled,
-                    color: Colors.white,
-                    size: 64,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _controller.value.isPlaying
-                          ? _controller.pause()
-                          : _controller.play();
-                    });
-                  },
-                ),
-
-              Positioned(
-                bottom: 10,
-                left: 10,
-                right: 10,
-                child: Column(
-                  children: [
-                    if (_initialized)
-                      VideoProgressIndicator(
-                        _controller,
-                        allowScrubbing: true,
-                        colors: VideoProgressColors(
-                          playedColor: Colors.red.shade800,
-                          bufferedColor: Colors.white30,
-                          backgroundColor: Colors.white12,
-                        ),
+              )
+            : _controller == null
+                ? const CircularProgressIndicator(color: Colors.red)
+                : YoutubePlayerBuilder(
+                    player: YoutubePlayer(
+                      controller: _controller!,
+                      showVideoProgressIndicator: true,
+                      progressIndicatorColor: Colors.red,
+                      progressColors: const ProgressBarColors(
+                        playedColor: Colors.red,
+                        handleColor: Colors.redAccent,
                       ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ValueListenableBuilder(
-                          valueListenable: _controller,
-                          builder: (context, VideoPlayerValue value, child) {
-                            return Text(
-                              _formatDuration(value.position),
-                              style: const TextStyle(color: Colors.white70, fontSize: 12),
-                            );
-                          },
-                        ),
-                        Text(
-                          _initialized ? _formatDuration(_controller.value.duration) : "00:00",
-                          style: const TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ],
+                      onReady: () {
+                        debugPrint('▶️ Reproductor de YouTube listo');
+                      },
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+                    builder: (context, player) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            player,
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                widget.pelicula['sinopsis'] ?? '',
+                                style: const TextStyle(color: Colors.white70),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
       ),
     );
   }
